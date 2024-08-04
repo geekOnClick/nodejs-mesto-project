@@ -9,6 +9,7 @@ export const {
 } = http2.constants
 
 export const STATUS_CODES = {
+  Error400: 400,
   Error409: 409,
   Error500: 500,
   Error11000: 11000
