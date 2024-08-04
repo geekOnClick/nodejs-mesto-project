@@ -1,23 +1,22 @@
 import { Request, NextFunction, Response } from 'express';
-import * as http2 from 'http2';
+import {ERROR_MESSAGES, HTTP_STATUS_BAD_REQUEST, HTTP_STATUS_NOT_FOUND, STATUS_CODES} from "../../utils/constants";
 
 export const errorHandler = (err: any, req: Request, res: Response, next: NextFunction) => {
-  const { HTTP_STATUS_NOT_FOUND, HTTP_STATUS_BAD_REQUEST } = http2.constants;
   const databaseErrors = {
     ValidationError: {
       status: HTTP_STATUS_BAD_REQUEST,
-      message: 'Данные не прошли валидацию',
+      message: ERROR_MESSAGES.ValidationError,
     },
     CastError: {
       status: HTTP_STATUS_BAD_REQUEST,
-      message: 'Невалидный id записи',
+      message: ERROR_MESSAGES.CastError,
     },
     DocumentNotFoundError: {
       status: HTTP_STATUS_NOT_FOUND,
-      message: 'В базе данных не найдена запись подходящая по параметрам запроса',
+      message: ERROR_MESSAGES.DocumentNotFoundError,
     },
   };
-  let { statusCode = 500, message } = err;
+  let { statusCode = STATUS_CODES.Error500, message } = err;
   type tDatabaseErrorKey = keyof typeof databaseErrors;
 
   // eslint-disable-next-line max-len
@@ -32,8 +31,8 @@ export const errorHandler = (err: any, req: Request, res: Response, next: NextFu
     .status(statusCode)
     .send({
       // eslint-disable-next-line no-nested-ternary
-      message: statusCode === 500
-        ? 'На сервере произошла ошибка'
+      message: statusCode === STATUS_CODES.Error500
+        ? ERROR_MESSAGES.ServerError
         : message,
     });
 };

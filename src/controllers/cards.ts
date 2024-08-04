@@ -3,6 +3,7 @@ import { TControllerParameters, TUpdatedRequest } from '../utils/types';
 import User from '../models/user';
 import Card from '../models/card';
 import Error404 from '../helpers/errors/Error404';
+import {ERROR_MESSAGES} from "../utils/constants";
 
 export const getAllCards = (req: Request, res: Response, next: NextFunction) => Card.find({})
   .then((cards) => {
@@ -23,7 +24,7 @@ export const createCard = (req: TUpdatedRequest, res: Response, next: NextFuncti
 export const deleteCardById = (req: Request, res: Response, next: NextFunction) => Card.findByIdAndDelete(req.params.cardId)
   .then((card) => {
     if (!card) {
-      throw new Error404('Пользователь с указанным _id не найден');
+      throw new Error404(ERROR_MESSAGES.UserNotExists);
     }
     res.send({ data: card });
   })
@@ -37,7 +38,7 @@ export const likeCard = (req: TUpdatedRequest, res: Response, next: NextFunction
   ).then((card) => {
     res.send({ data: card });
   })
-    .catch((err) => next(new Error404('Запрашиваемый пользователь не найден')));
+    .catch((err) => next(new Error404(ERROR_MESSAGES.PersonNotExists)));
 };
 
 export const dislikeCard = (req: TUpdatedRequest, res: Response, next: NextFunction) => {
@@ -48,5 +49,5 @@ export const dislikeCard = (req: TUpdatedRequest, res: Response, next: NextFunct
   ).then((card) => {
     res.send({ data: card });
   })
-    .catch((err) => next(new Error404('Запрашиваемый пользователь не найден')));
+    .catch((err) => next(new Error404(ERROR_MESSAGES.PersonNotExists)));
 };

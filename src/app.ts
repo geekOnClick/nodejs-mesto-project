@@ -11,6 +11,7 @@ import { createUser } from './controllers/users';
 import { login } from './controllers/login';
 import { checkAuthorization } from './middlewares/auth';
 import {errorLogger, requestLogger} from "./middlewares/logger";
+import {ERROR_MESSAGES} from "./utils/constants";
 
 require('dotenv').config();
 
@@ -63,7 +64,7 @@ app.post('/signin', celebrate({
 app.use(checkAuthorization);
 app.use('/users', usersRouter);
 app.use('/cards', cardsRouter);
-app.all('*', (req, res, next) => next(new Error404('Обращение к несуществующему ресурсу')));
+app.all('*', (req, res, next) => next(new Error404(ERROR_MESSAGES.ResourceNotFound)));
 app.use(errorLogger);
 app.use(errors());
 app.use(errorHandler);

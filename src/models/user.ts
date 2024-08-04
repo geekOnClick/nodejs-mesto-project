@@ -4,6 +4,7 @@ import {
 import bcrypt from 'bcryptjs';
 import Error401 from '../helpers/errors/Error401';
 import { TUser } from '../utils/types';
+import {ERROR_MESSAGES} from "../utils/constants";
 
 export interface IUser {
   name?: string,
@@ -63,11 +64,11 @@ userSchema.static('findUserByCredentials', function findUserByCredentials(email:
   return this.findOne({ email }).select('+password')
     .then((user: TUser) => {
       if (!user) {
-        return Promise.reject(new Error401('Неправильные почта или пароль'));
+        return Promise.reject(new Error401(ERROR_MESSAGES.AccessDenied));
       }
       return bcrypt.compare(password, user.password).then((matched) => {
         if (!matched) {
-          return Promise.reject(new Error401('Неправильные почта или пароль'));
+          return Promise.reject(new Error401(ERROR_MESSAGES.AccessDenied));
         }
         return user;
       });
