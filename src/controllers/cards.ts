@@ -1,18 +1,16 @@
-import {TControllerParameters, TUpdatedRequest} from "../utils/types";
-import {NextFunction, Request, Response} from "express";
-import User from "../models/user";
-import Card from "../models/card";
-import Error404 from "../helpers/errors/Error404";
+import { NextFunction, Request, Response } from 'express';
+import { TControllerParameters, TUpdatedRequest } from '../utils/types';
+import User from '../models/user';
+import Card from '../models/card';
+import Error404 from '../helpers/errors/Error404';
 
-export const getAllCards = (req: Request, res: Response, next: NextFunction) => {
-  return Card.find({})
-    .then((cards) => {
-      res.send({data: cards})
-    })
-    .catch((err) => {
-      next()
-    })
-};
+export const getAllCards = (req: Request, res: Response, next: NextFunction) => Card.find({})
+  .then((cards) => {
+    res.send({ data: cards });
+  })
+  .catch((err) => {
+    next();
+  });
 
 export const createCard = (req: TUpdatedRequest, res: Response, next: NextFunction) => {
   const { name, link } = req.body;
@@ -39,7 +37,7 @@ export const likeCard = (req: TUpdatedRequest, res: Response, next: NextFunction
   ).then((card) => {
     res.send({ data: card });
   })
-    .catch((err) => next(new Error404("Запрашиваемый пользователь не найден")));
+    .catch((err) => next(new Error404('Запрашиваемый пользователь не найден')));
 };
 
 export const dislikeCard = (req: TUpdatedRequest, res: Response, next: NextFunction) => {
@@ -50,5 +48,5 @@ export const dislikeCard = (req: TUpdatedRequest, res: Response, next: NextFunct
   ).then((card) => {
     res.send({ data: card });
   })
-    .catch((err) => next(new Error404("Запрашиваемый пользователь не найден")));
+    .catch((err) => next(new Error404('Запрашиваемый пользователь не найден')));
 };

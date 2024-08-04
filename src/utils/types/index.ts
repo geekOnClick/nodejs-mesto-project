@@ -12,3 +12,12 @@ export type TController = Record<
 >;
 /** тип для параметров контроллера */
 export type TControllerParameters = Parameters<TController[string]>;
+
+export type TUser = {
+  _id: string
+  name?: string,
+  about?: string,
+  avatar?: string,
+  email: string,
+  password: string
+};
