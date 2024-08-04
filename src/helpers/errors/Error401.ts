@@ -1,11 +1,11 @@
-import * as http2 from 'http2';
+import {HTTP_STATUS_UNAUTHORIZED} from "../../utils/constants";
 
 class Error401 extends Error {
   statusCode: number;
 
   constructor(message: string) {
     super(message);
-    this.statusCode = http2.constants.HTTP_STATUS_UNAUTHORIZED;
+    this.statusCode = HTTP_STATUS_UNAUTHORIZED;
   }
 }
 
