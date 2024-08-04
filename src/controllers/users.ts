@@ -41,7 +41,7 @@ export const createUser = async (req: Request, res: Response, next: NextFunction
         .send({ data: user });
     })
     .catch((err) => {
-      if (err.code === 409) {
+      if (err.code === 409 || err.code === 11000) {
         return next(new Error409('Создание дублирующей записи'));
       } return next(err);
     });
@@ -77,4 +77,14 @@ export const updateUserAvatar = (req: TUpdatedRequest, res: Response, next: Next
       about: user?.about,
     }))
     .catch(() => next(new Error404('Запрашиваемый пользователь не найден')));
+};
+
+export const getUserData = (req: Request, res: Response, next: NextFunction) => {
+  const { userId } = req.params;
+  return User.findOne({ _id: userId })
+    .orFail()
+    .then((user) => {
+      res.send(user);
+    })
+    .catch(next);
 };

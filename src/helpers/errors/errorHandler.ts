@@ -2,7 +2,6 @@ import { Request, NextFunction, Response } from 'express';
 import * as http2 from 'http2';
 
 export const errorHandler = (err: any, req: Request, res: Response, next: NextFunction) => {
-
   const { HTTP_STATUS_NOT_FOUND, HTTP_STATUS_BAD_REQUEST } = http2.constants;
   const databaseErrors = {
     ValidationError: {
