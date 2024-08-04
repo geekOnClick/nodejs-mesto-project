@@ -1,5 +1,6 @@
 import { Request, NextFunction, Response } from 'express';
 import jwt, { JwtPayload } from 'jsonwebtoken';
+import process from 'process';
 import Error401 from '../helpers/errors/Error401';
 
 export interface SessionRequest extends Request {
@@ -13,7 +14,7 @@ export function checkAuthorization(req: Request, res: Response, next: NextFuncti
   }
   let payload;
   try {
-    payload = jwt.verify(token, 'some-secret-key');
+    payload = jwt.verify(token, process.env.JWT_SECRET_PUBLIC || '');
   } catch (err) {
     return next(new Error401('необходима авторизация'));
   }
