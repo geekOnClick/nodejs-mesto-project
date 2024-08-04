@@ -1,7 +1,10 @@
-import {NextFunction, Router, Request, Response} from "express";
-import {createUser, getAllUsers, getUserById, updateUser, updateUserAvatar} from "../controllers/users";
-import {celebrate, Joi} from "celebrate";
-
+import {
+  NextFunction, Router, Request, Response,
+} from 'express';
+import { celebrate, Joi } from 'celebrate';
+import {
+  createUser, getAllUsers, getUserById, getUserData, updateUser, updateUserAvatar,
+} from '../controllers/users';
 
 const usersRouter = Router();
 
@@ -12,7 +15,6 @@ usersRouter.get('/:userId', celebrate({
     userId: Joi.string().hex(),
   }),
 }), getUserById);
-
 
 usersRouter.post(
   '',
@@ -29,4 +31,9 @@ usersRouter.patch(
   updateUserAvatar,
 );
 
+usersRouter.get('/me', celebrate({
+  params: Joi.object().keys({
+    userId: Joi.string().hex(),
+  }),
+}), getUserData);
 export default usersRouter;
